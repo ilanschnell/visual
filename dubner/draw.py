@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 from bitarray.util import zeros, gen_primes
 
 
-def draw_bitarray(a, size, colors, imap=lambda i: 6 * i):
+def draw_bitarray(a, size, colors, mul=1):
     font = ImageFont.truetype("Vera.ttf", 0.36 * size)
 
     im = Image.new('RGB', (size * len(a) + 1, size + 1))
@@ -13,19 +13,19 @@ def draw_bitarray(a, size, colors, imap=lambda i: 6 * i):
                      fill=colors[v],
                      outline="black")
         dr.text(((i + 0.5) * size, 0.5 * size),
-                str(imap(i)), anchor='mm',
+                str(mul * i), anchor='mm',
                 fill=colors[v + 2], font=font)
     return im
 
-def polygons(n, size):
+def lines(n, size):
     im = Image.new('RGB', (size * n + 1, 2 * size + 1), color="#fff")
     dr = ImageDraw.Draw(im)
     h = 2 * size
     for i in range(5):
-        j = 6 * i
-        dr.polygon([(i * size, h), (j * size, 0),
-                    ((j + 1) * size, 0), ((i + 1) * size, h)],
-                   fill="#eee" if i in (0, 4) else '#fa7')
+        j = 6 * i + 1
+        dr.line([((i + 0.5) * size, h), ((j + 0.5) * size, 0)],
+                fill="#eee" if i in (0, 4) else '#fa7',
+                width=5)
     return im
 
 def dubner():
@@ -42,18 +42,18 @@ def dubner():
     colors3 = ['#eee', '#d66', '#000', '#fff']
 
     im = Image.new('RGB', size, color='#fff')
-    im.paste(polygons(25, sqr),
+    im.paste(lines(25, sqr),
              (space, space + 3 * sqr))
 
-    im.paste(draw_bitarray(primes[:24], sqr, colors1, lambda i: i),
-             (space + sqr, space))
-    im.paste(draw_bitarray((primes << 1)[:25], sqr, colors1, lambda i: i + 1),
-             (space, space + sqr))
-    im.paste(draw_bitarray(middles[:25], sqr, colors2, lambda i: i),
-             (space, space + 2 * sqr))
+    im.paste(draw_bitarray(primes[:25], sqr, colors1),
+             (space, space))
+    im.paste(draw_bitarray(primes[:23], sqr, colors1),
+             (space + 2 * sqr, space + sqr))
+    im.paste(draw_bitarray(middles[:24], sqr, colors2),
+             (space + sqr, space + 2 * sqr))
 
     middles = middles[::6]
-    im.paste(draw_bitarray(middles[:25], sqr, colors2),
+    im.paste(draw_bitarray(middles[:25], sqr, colors2, 6),
              (space, space + 5 * sqr))
 
     mark = zeros(len(middles))
@@ -61,10 +61,10 @@ def dubner():
         mark |= middles >> i
     print([6 * i for i in mark.search(0, 2)])
     for i, j in enumerate(middles.search(1, 0, 24)):
-        im.paste(draw_bitarray(middles[:25 - j], sqr, colors1),
+        im.paste(draw_bitarray(middles[:25 - j], sqr, colors1, 6),
                  (space + j * sqr, 2 * space + 6 * sqr + i * sqr))
 
-    im.paste(draw_bitarray(mark[:25], sqr, colors3),
+    im.paste(draw_bitarray(mark[:25], sqr, colors1, 6),
              (space, 2 * space + 16 * sqr))
 
     im.save('image.png')
