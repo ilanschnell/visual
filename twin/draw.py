@@ -11,7 +11,7 @@ def draw_bitarray(a, size, imap=lambda i: i):
     dr = ImageDraw.Draw(im)
     for i, v in enumerate(a):
         dr.rectangle([(i * size, 0), ((i+1) * size, size)],
-                     fill=colors[v],
+                     fill='#e44' if i == 2 == imap(2) else colors[v],
                      outline="#000")
         dr.text(((i + 0.15) * size, 0.3 * size),
                 str(imap(i)),
