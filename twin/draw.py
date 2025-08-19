@@ -13,8 +13,8 @@ def draw_bitarray(a, size, imap=lambda i: i):
         dr.rectangle([(i * size, 0), ((i+1) * size, size)],
                      fill='#e44' if i == 2 == imap(2) else colors[v],
                      outline="#000")
-        dr.text(((i + 0.15) * size, 0.3 * size),
-                str(imap(i)),
+        dr.text(((i + 0.5) * size, 0.5 * size),
+                str(imap(i)), anchor="mm",
                 fill=colors[v + 2], font=font)
     return im
 
