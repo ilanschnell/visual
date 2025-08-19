@@ -19,10 +19,10 @@ def draw_bitarray(a, size, imap=lambda i: i):
     return im
 
 def polygons(n, size):
-    im = Image.new('RGB', (size * 25 + 1, 2 * size + 1), color="#fff")
+    im = Image.new('RGB', (size * n + 1, 2 * size + 1), color="#fff")
     dr = ImageDraw.Draw(im)
     h = 2 * size
-    for i in range(n):
+    for i in range(n // 2):
         j = 2 * i + 1
         dr.polygon([(i * size, h), (j * size, 0),
                     ((j + 1) * size, 0), ((i + 1) * size, h)],
@@ -30,20 +30,21 @@ def polygons(n, size):
     return im
 
 def twins():
+    n = 25
     sqr = 50    # square size
     border = 20
     map_odd = lambda i: 2 * i + 1
-    size = (2 * border + 25 * sqr,
-            2 * border +  6 * sqr)
+    size = (2 * border + n * sqr,
+            2 * border + 6 * sqr)
     print(size)
     im = Image.new('RGB', size, color='#fff')
-    im.paste(polygons(12, sqr),
+    im.paste(polygons(n, sqr),
              (border, border + sqr))
 
-    im.paste(draw_bitarray(gen_primes(25), sqr),
+    im.paste(draw_bitarray(gen_primes(n), sqr),
              (border, border))
 
-    primes = gen_primes(25, odd=True)
+    primes = gen_primes(n, odd=True)
     im.paste(draw_bitarray(primes, sqr, imap=map_odd),
              (border, border + 3 * sqr))
 
