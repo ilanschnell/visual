@@ -12,8 +12,8 @@ def draw_bitarray(a, size, colors):
         dr.rectangle([(i * size, 0), ((i+1) * size, size)],
                      fill=colors[v],
                      outline="black")
-        dr.text(((i + 0.15) * size, 0.3 * size),
-                str(6 * i),
+        dr.text(((i + 0.5) * size, 0.5 * size),
+                str(6 * i), anchor='mm',
                 fill=colors[v + 2], font=font)
     return im
 
