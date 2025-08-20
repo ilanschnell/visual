@@ -24,8 +24,7 @@ def lines(n, size):
     for i in range(5):
         j = 6 * i + 1
         dr.line([((i + 0.5) * size, h), ((j + 0.5) * size, 0)],
-                fill="#eee" if i in (0, 4) else '#fa7',
-                width=5)
+                fill="#bbb", width=5)
     return im
 
 def dubner():
